@@ -1,0 +1,37 @@
+@keyframes rainbowText {
+    0% {color: red}
+    14.29% {color: orange}
+    28.57% {color: yellow}
+    42.86% {color: limegreen}
+    57.14% {color: blue}
+    71.43% {color: indigo}
+    85.71% {color: violet}
+    100% {color: red}
+}
+
+@keyframes scaling {
+    to {transform: scale(2.0)}
+}
+
+@keyframes rotating {
+    to {transform: rotate(360deg)}
+}
+
+body, html{
+    margin: 0;
+}
+
+
+h1 {
+    display: inline-block;
+}
+
+#content-container {
+    text-align: center;
+}
+
+#content-container>h1{
+    background: black;
+    font-family: 'Comic Sans', 'Comic Sans MS', display;
+    animation: rainbowText 2s infinite, scaling 1s alternate ease-in-out infinite; /* rotating 3s infinite linear; */
+}
