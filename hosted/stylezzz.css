@@ -26,11 +26,14 @@ h1 {
     display: inline-block;
 }
 
-#content-container {
+#user-container{
+    flex-grow: 1;
+    height: 100%;
     text-align: center;
 }
 
-#content-container>h1{
+#user-container h1{
+    text-align: center;
     background: black;
     font-family: 'Comic Sans', 'Comic Sans MS', display;
     animation: rainbowText 2s infinite, scaling 1s alternate ease-in-out infinite; /* rotating 3s infinite linear; */
