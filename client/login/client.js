@@ -1,16 +1,18 @@
+const handleError = (message) => {
+    $("#error").text(message);
+}
+
 const handleLogin = (e) => {
     e.preventDefault();
 
-    $("#domoMessage").animate({ width: 'hide' }, 350);
-
     if ($("#user").val() == '' || $("#pass").val() == '') {
-        handleError("RAWR! Username or password is empty");
+        handleError("Username or password is empty");
         return false;
     }
 
     console.log($("input[name=_csrf]").val());
 
-    sendAjax('POST', $("#loginForm").attr('action'), $("#loginForm").serialize(), redirect);
+    sendAjax('POST', $("#login-form").attr('action'), $("#login-form").serialize(), redirect, handleError);
 
     return false;
 };
@@ -21,56 +23,63 @@ const handleSignup = (e) => {
     $("#domoMessage").animate({ width: 'hide' }, 350);
 
     if ($("#user").val() == '' || $("#pass").val() == '' || $("#pass2").val() == '') {
-        handleError("RAWR! All fields are required");
+        handleError("All fields are required");
         return false;
     }
 
     if ($("#pass").val() !== $("#pass2").val()) {
-        handleError("RAWR! Passwords do not match");
+        handleError("Passwords do not match");
         return false;
     }
 
     // console.log($("input[name=_csrf]").val());
 
-    sendAjax('POST', $("#signupForm").attr('action'), $("#signupForm").serialize(), redirect);
+    sendAjax('POST', $("#signup-form").attr('action'), $("#signup-form").serialize(), redirect);
 
     return false;
 };
 
 const LoginWindow = (props) => {
     return (
-        <form id="loginForm" name="loginForm"
+        <form id="login-form"
             onSubmit={handleLogin}
             action="/login"
             method="POST"
-            className="mainForm"
+            className="form"
         >
-            <label htmlFor="username">Username: </label>
-            <input id="user" type="text" name="username" placeholder="username" />
-            <label htmlFor="pass">Password: </label>
-            <input id="pass" type="password" name="pass" placeholder="password" />
+            <h2>Login</h2>
+            <p id="error">&nbsp;</p>
+            <input id="user" type="text" name="username" placeholder="Username" />
+            <input id="pass" type="password" name="pass" placeholder="Password" />
             <input type="hidden" name="_csrf" value={props.csrf} />
-            <input className="formSubmit" type="submit" value="Sign In" />
+            <input type="submit" value="Sign in" />
+            <br />
+            <p>
+                New here? <a onClick={(e) => { toggleForm(e, props.csrf) }} href="">Sign up.</a>
+            </p>
         </form>
     )
 };
 
 const SignupWindow = (props) => {
     return (
-        <form id="signupForm" name="signupForm"
+        <form id="signup-form"
             onSubmit={handleSignup}
             action="/signup"
             method="POST"
-            className="mainForm"
+            className="form"
         >
-            <label htmlFor="username">Username: </label>
-            <input id="user" type="text" name="username" placeholder="username" />
-            <label htmlFor="pass">Password: </label>
-            <input id="pass" type="password" name="pass" placeholder="password" />
-            <label htmlFor="pass2">Password: </label>
-            <input id="pass2" type="password" name="pass2" placeholder="retype password" />
+            <h2>Create an account</h2>
+            <p id="error">&nbsp;</p>
+            <input id="user" type="text" name="username" placeholder="Username" />
+            <input id="pass" type="password" name="pass" placeholder="Password" />
+            <input id="pass2" type="password" name="pass2" placeholder="Re-enter password" />
             <input type="hidden" name="_csrf" value={props.csrf} />
-            <input className="formSubmit" type="submit" value="Sign Up" />
+            <input type="submit" value="Sign up" />
+            <br />
+            <p>
+                Have an account? <a onClick={(e) => { toggleForm(e, props.csrf) }} href="">Sign in.</a>
+            </p>
         </form>
     );
 };
@@ -78,35 +87,39 @@ const SignupWindow = (props) => {
 const createLoginWindow = (csrf) => {
     ReactDOM.render(
         <LoginWindow csrf={csrf} />,
-        document.querySelector("#content")
+        document.querySelector("#login-container")
     );
 };
 
 const createSignupWindow = (csrf) => {
     ReactDOM.render(
         <SignupWindow csrf={csrf} />,
-        document.querySelector("#content")
+        document.querySelector("#login-container")
     );
 };
 
+let toggle = false;
+
 const setup = (csrf) => {
-    const loginButton = document.querySelector("#loginButton");
-    const signupButton = document.querySelector("#signupButton");
-
-    loginButton.addEventListener("click", (e) => {
-        e.preventDefault();
-        createLoginWindow(csrf);
-        return false;
-    });
-
-    signupButton.addEventListener("click", (e) => {
-        e.preventDefault();
-        createSignupWindow(csrf);
-        return false;
-    });
-
     createLoginWindow(csrf);
 }
+
+const toggleForm = (e, csrf) => {
+    e.preventDefault();
+
+    toggle = !toggle;
+
+    if (toggle) createSignupWindow(csrf);
+    else createLoginWindow(csrf);
+
+    return false;
+}
+
+
+
+// if form is toggled, sign up form is active,
+// if not then it is on login
+
 
 const getToken = () => {
     sendAjax('GET', '/getToken', null, (result) => {

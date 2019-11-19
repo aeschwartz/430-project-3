@@ -1,12 +1,71 @@
+<!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="utf-8"/>
-  <title>DomoMaker</title>
-  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-  <link rel="shortcut icon" href="/assets/img/favicon.png"/>
-  <link rel="stylesheet" type="text/css" href="/assets/style.css"/>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link href="/assets/main.css" rel="stylesheet" type="text/css" />
+  <script src="https://kit.fontawesome.com/00d9cc7b2a.js" crossorigin="anonymous"></script>
+  <script crossorigin src="https://unpkg.com/react@15/dist/react.min.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@15/dist/react-dom.min.js"></script>
+  <script crossorigin src="https://unpkg.com/prop-types/prop-types.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.34/browser.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/remarkable/1.6.2/remarkable.min.js"></script>
+  <title>ProfileZ</title>
+  {{#if profile}}
+    <style>
+      #content-container>*:nth-child(2):not(#posts-container) h1,
+      #content-container>*:nth-child(2):not(#posts-container) h2,
+      #content-container>*:nth-child(2):not(#posts-container) h3,
+      #content-container>*:nth-child(2):not(#posts-container) h4,
+      #content-container>*:nth-child(2):not(#posts-container) h5,
+      #content-container>*:nth-child(2):not(#posts-container) h6{
+        font-family: {{profile.user.style.fontFamilyHead}}, Papyrus !important;
+      }
+      #content-container>*:nth-child(2):not(#posts-container){
+        font-family: {{profile.user.style.fontFamilyBody}} !important;
+        color: {{profile.user.style.color}} !important;
+      }
+      #content-container>*:nth-child(2){
+        background-color: {{profile.user.style.backgroundColor}} !important;
+      }
+    </style>
+  {{else if user}}
+      <style>
+      #content-container>*:nth-child(2):not(#posts-container) h1,
+      #content-container>*:nth-child(2):not(#posts-container) h2,
+      #content-container>*:nth-child(2):not(#posts-container) h3,
+      #content-container>*:nth-child(2):not(#posts-container) h4,
+      #content-container>*:nth-child(2):not(#posts-container) h5,
+      #content-container>*:nth-child(2):not(#posts-container) h6{
+        font-family: {{user.style.fontFamilyHead}}, Papyrus !important;
+      }
+      #content-container>*:nth-child(2):not(#posts-container){
+        font-family: {{user.style.fontFamilyBody}} !important;
+        color: {{user.style.color}} !important;
+      }
+      #content-container>*:nth-child(2){
+        background-color: {{user.style.backgroundColor}} !important;
+      }
+    </style>
+  {{/if}}
 </head>
-<body>  
-  {{{body}}}
+
+<body>
+  <div id="content-container">
+    <nav>
+      <a href="/" alt="Home feed"><i class="fas fa-home"></i></a>
+      <a href="/me" alt="Profile"><i class="fas fa-user"></i></a>
+      {{#if user}}
+        <a href="/create" alt="create post"><i class="fas fa-plus"></i></a>
+        <a href="/settings" alt="User settings"><i class="fas fa-cog"></i></a>
+        <a href="/logout" alt="Log out"><i class="fas fa-sign-out-alt"></i></a>
+      {{else}}
+        <a href="/login" alt="Log in"><i class="fas fa-sign-in-alt"></i></a>
+      {{/if}}
+    </nav>
+    {{{body}}}
+  </div>
 </body>
-</html>

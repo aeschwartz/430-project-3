@@ -16,6 +16,35 @@ const AccountSchema = new mongoose.Schema({
     unique: true,
     match: /^[A-Za-z0-9_\-.]{1,16}$/,
   },
+  bio: {
+    type: String,
+  },
+  style: {
+    fontFamilyHead: {
+      type: String,
+      trim: true,
+      default: 'Papyrus',
+    },
+    fontFamilyBody: {
+      type: String,
+      trim: true,
+      default: 'Comic Sans MS',
+    },
+    color: {
+      type: String,
+      trim: true,
+      default: '#000000',
+    },
+    accentColor: {
+      type: String,
+      trim: true,
+    },
+    backgroundColor: {
+      type: String,
+      trim: true,
+      default: '#ffffff',
+    },
+  },
   salt: {
     type: Buffer,
     required: true,
@@ -33,6 +62,8 @@ const AccountSchema = new mongoose.Schema({
 AccountSchema.statics.toAPI = doc => ({
   // _id is built into your mongo document and is guaranteed to be unique
   username: doc.username,
+  bio: doc.bio,
+  style: doc.style,
   _id: doc._id,
 });
 

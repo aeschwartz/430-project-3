@@ -1,9 +1,11 @@
-@import url('https://fonts.googleapis.com/css?family=Quicksand:400,700&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Public+Sans:400,700&display=swap');
+@import url('fonts.css');
 
 body, html{
     margin: 0;
     width: 100%;
     height: 100%;
+    font-family: Public Sans, sans-serif;
 }
 
 #content-container{
@@ -39,10 +41,115 @@ nav>a:hover{
     background: rgba(198, 224, 247, 0.2);
 }
 
-#posts-container{
+#login-container, #settings-container, #create-container, #password-container{
+    flex-grow: 1;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.form{
+    border-radius: 10px;
+    border: 5px solid rgba(113, 126, 138, 0.6);
+    padding: 10px;
+    margin: 0;
+    width: 325px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+}
+
+.form>*{
+    margin: 0;
+}
+
+.form>#error{
+    color: red;
+    height: auto;
+    flex-shrink: 0;
+    display: block;
+}
+
+.form>h2{
+    font-size: 32px;
+}
+
+.form>input{
+    font-family: inherit;
+    display: block;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid gray;
+    outline: 0;
+    margin: 5px 0;
+    font-size: 16px;
+}
+
+.form>input:not([type=submit]):focus{
+    /* box-shadow: inset 0 0 1px black; */
+    box-shadow: 0 0 5px cornflowerblue;
+}
+
+.form>input[type=submit]{
+    background: #232d36;
+    cursor: pointer;
+    color: rgba(198, 224, 247);
+    border: 0;
+    transition: all .1s;
+}
+
+.form>input[type=submit]:hover{
+    box-shadow: 0 0 0 1px gray;
+}
+
+.form p>a{
+    color: rgb(113, 126, 138);
+    text-decoration: none;
+}
+
+.form p>a:hover{
+    text-decoration: underline;
+}
+
+#settings-form .font-select>option[value=Papyrus]{
+    font-family: Papyrus;
+}
+#settings-form .font-select>option[value="Curlz MT"]{
+    font-family: Curlz MT;
+}
+#settings-form .font-select>option[value=Jokerman]{
+    font-family: Jokerman;
+}
+#settings-form .font-select>option[value=Impact]{
+    font-family: Impact;
+}
+#settings-form .font-select>option[value="Comic Sans MS"]{
+    font-family: "Comic Sans MS";
+}
+#settings-form .font-select>option[value="Courier New"]{
+    font-family: Courier New;
+}
+
+textarea {
+    resize: none;
+    font-family: inherit;
+}
+
+input {
+    font-family: inherit;
+}
+
+#posts-container, #profile-container{
     flex-grow: 1;
     height: 100%;
     overflow-y: auto;
+    display: flex;
+    justify-content: center;
+}
+
+#profile-container>#profile{
+    width: 500px;
 }
 
 #posts{
@@ -71,5 +178,13 @@ nav>a:hover{
 .post>*{
     display: inline-block;
     margin: 0;
-    font-family: 'Quicksand', sans-serif;
+    color: inherit;
+}
+
+.post>a{
+    text-decoration: none;
+}
+
+.post>a:hover{
+    text-decoration: underline;
 }

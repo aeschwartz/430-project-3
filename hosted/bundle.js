@@ -1,159 +1,138 @@
 "use strict";
 
-var csrf = void 0; // don't create an accessible variable for this
-
-var handleDomo = function handleDomo(e) {
-    e.preventDefault();
-
-    $("#domoMessage").animate({ width: 'hide' }, 350);
-
-    if ($("#domoName").val() == '' || $("#domoAge").val() == '' || $("#domoTeeth").val() == '') {
-        handleError("RAWR! All fields are required");
-        return false;
-    }
-
-    console.log($("input[name=_csrf]").val());
-
-    sendAjax('POST', $("#domoForm").attr('action'), $("#domoForm").serialize(), loadDomosFromServer);
-
-    return false;
-};
-
-var editDomo = function editDomo(e) {
-    e.preventDefault();
-
-    $("#domoMessage").animate({ width: 'hide' }, 350);
-
-    var form = $(e.target);
-
-    if (form.find(".domoName>input").val() == '' || form.find(".domoAge>input").val() == '' || form.find(".domoTeeth>input").val() == '') {
-        handleError("RAWR! All fields are required");
-        return false;
-    }
-
-    sendAjax('POST', form.attr("action"), form.serialize(), loadDomosFromServer);
-
-    return false;
-};
-
-var DomoForm = function DomoForm(props) {
-    return React.createElement(
-        "form",
-        { id: "domoForm",
-            onSubmit: handleDomo,
-            name: "domoForm",
-            action: "/maker",
-            method: "POST",
-            className: "domoForm"
-        },
-        React.createElement(
-            "label",
-            { htmlFor: "name" },
-            "Name: "
-        ),
-        React.createElement("input", { id: "domoName", type: "text", name: "name", placeholder: "Domo Name" }),
-        React.createElement(
-            "label",
-            { htmlFor: "age" },
-            "Age: "
-        ),
-        React.createElement("input", { id: "domoAge", type: "text", name: "age", placeholder: "Domo Age" }),
-        React.createElement(
-            "label",
-            { htmlFor: "teeth" },
-            "Teeth: "
-        ),
-        React.createElement("input", { id: "domoTeeth", type: "text", name: "teeth", placeholder: "Number of Teeth" }),
-        React.createElement("input", { type: "hidden", name: "_csrf", value: props.csrf }),
-        React.createElement("input", { className: "makeDomoSubmit", type: "submit", value: "Make Domo" })
-    );
-};
-
-var DomoList = function DomoList(props) {
-    if (props.domos.length === 0) {
+var PostFeed = function PostFeed(props) {
+    if (props.posts.length === 0) {
         return React.createElement(
             "div",
-            { className: "domoList" },
+            { id: "posts" },
             React.createElement(
                 "h3",
-                { className: "emptyDomo" },
-                "No Domos yet"
+                { className: "empty" },
+                "No posts yet."
             )
         );
     }
 
-    var domoNodes = props.domos.map(function (domo) {
+    var postNodes = props.posts.map(function (post) {
+        if (!post.owner.style) {
+            return React.createElement(
+                "div",
+                { className: "post" },
+                React.createElement(
+                    "a",
+                    { href: "/profile?user=" + post.owner.username },
+                    post.owner.username
+                ),
+                post.postTitle && React.createElement(
+                    "h2",
+                    { className: "title" },
+                    post.postTitle
+                ),
+                React.createElement(
+                    "p",
+                    { className: "body" },
+                    post.postBody
+                )
+            );
+        }
+        var rootStyle = {
+            backgroundColor: post.owner.style.backgroundColor,
+            color: post.owner.style.color,
+            fontFamily: post.owner.style.fontFamilyBody
+        };
         return React.createElement(
-            "form",
-            { action: "/edit", method: "POST", onSubmit: editDomo, key: domo._id, className: "domo" },
-            React.createElement("input", { type: "hidden", name: "_csrf", value: props.csrf }),
-            React.createElement("input", { type: "hidden", name: "_id", value: domo._id }),
-            React.createElement("img", { src: "/assets/img/domoface.jpeg", alt: "domo face", className: "domoFace" }),
+            "div",
+            { className: "post",
+                style: rootStyle },
             React.createElement(
-                "h3",
-                { className: "domoName" },
-                " Name: ",
-                React.createElement("input", { name: "name", type: "text", defaultValue: domo.name })
+                "a",
+                { href: "/profile?user=" + post.owner.username },
+                post.owner.username
+            ),
+            post.postTitle && React.createElement(
+                "h2",
+                { className: "title", style: { fontFamily: post.owner.style.fontFamilyHead } },
+                post.postTitle
             ),
             React.createElement(
-                "h3",
-                { className: "domoAge" },
-                " Age: ",
-                React.createElement("input", { name: "age", type: "text", defaultValue: domo.age })
-            ),
-            React.createElement(
-                "h3",
-                { className: "domoTeeth" },
-                "Teeth: ",
-                React.createElement("input", { name: "teeth", type: "text", defaultValue: domo.teeth })
-            ),
-            React.createElement("input", { type: "submit", value: "Edit Domo" })
+                "p",
+                { className: "body" },
+                post.postBody
+            )
         );
     });
 
+    postNodes.reverse();
+
     return React.createElement(
         "div",
-        { className: "domoList" },
-        domoNodes
+        { id: "posts" },
+        postNodes
     );
 };
 
-var loadDomosFromServer = function loadDomosFromServer() {
-    sendAjax('GET', '/getDomos', null, function (data) {
-        ReactDOM.render(React.createElement(DomoList, { csrf: csrf, domos: data.domos }), document.querySelector("#domos"));
-    });
+var ProfileHeader = function ProfileHeader(props) {
+    return React.createElement(
+        "div",
+        { id: "profile-header" },
+        React.createElement(
+            "h1",
+            { id: "user-heading" },
+            props.user.username
+        ),
+        React.createElement(
+            "p",
+            { id: "user-bio" },
+            props.user.bio
+        )
+    );
+};
+
+var Profile = function Profile(props) {
+    return React.createElement(
+        "div",
+        { id: "profile" },
+        React.createElement(ProfileHeader, { user: props.userData }),
+        React.createElement(PostFeed, { posts: props.posts })
+    );
+};
+
+var loadPostsFromServer = function loadPostsFromServer(user) {
+    if (user) {
+        sendAjax('GET', "/getUser?user=" + user, null, function (userData) {
+            sendAjax('GET', "/getPosts?user=" + user, null, function (data) {
+                ReactDOM.render(React.createElement(Profile, { userData: userData.user, posts: data.posts }), document.querySelector("#profile-container"));
+            });
+        });
+    } else {
+        sendAjax('GET', "/getPosts", null, function (data) {
+            ReactDOM.render(React.createElement(PostFeed, { posts: data.posts }), document.querySelector("#posts-container"));
+        });
+    }
 };
 
 var setup = function setup() {
-    ReactDOM.render(React.createElement(DomoForm, { csrf: csrf }), document.querySelector("#makeDomo"));
+    if ($("#posts-container")[0]) {
+        ReactDOM.render(React.createElement(PostFeed, { posts: [] }), document.querySelector("#posts-container"));
+        loadPostsFromServer();
+    } else if ($("#profile-container")[0]) {
+        var user = document.querySelector("#profile-container").dataset.user;
 
-    ReactDOM.render(React.createElement(DomoList, { csrf: csrf, domos: [] }), document.querySelector("#domos"));
+        // TODO: change this to rendering whole profile
+        ReactDOM.render(React.createElement(PostFeed, { posts: [] }), document.querySelector("#profile-container"));
 
-    loadDomosFromServer();
+        loadPostsFromServer(user);
+    }
 };
 
-var getToken = function getToken() {
-    sendAjax('GET', '/getToken', null, function (result) {
-        csrf = result.csrfToken;
-        setup();
-    });
-};
-
-// window.onload
-$(document).ready(getToken);
+$(document).ready(setup);
 "use strict";
 
-var handleError = function handleError(message) {
-    $("#errorMessage").text(message);
-    $("#domoMessage").animate({ width: 'toggle' }, 350);
-};
-
 var redirect = function redirect(res) {
-    $("domoMessage").animate({ width: 'hide' }, 350);
     window.location = res.redirect;
 };
 
-var sendAjax = function sendAjax(type, action, data, success) {
+var sendAjax = function sendAjax(type, action, data, success, handleError) {
     $.ajax({
         cache: false,
         type: type,
@@ -162,7 +141,7 @@ var sendAjax = function sendAjax(type, action, data, success) {
         dataType: "json",
         success: success,
         error: function error(xhr, status, _error) {
-            var messageObj = xhr.response;
+            var messageObj = $.parseJSON(xhr.responseText);
             handleError(messageObj.error);
         }
     });

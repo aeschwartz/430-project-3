@@ -1,0 +1,17 @@
+@font-face {
+    font-family: "Jokerman";
+    src: local("Jokerman"),
+         url("/fonts/JOKERMAN.TTF") format("truetype");
+}
+
+@font-face {
+    font-family: "Curlz MT";
+    src: local("Curlz MT"),
+         url("/fonts/CURLZ__.TTF") format("truetype");
+}
+
+@font-face {
+    font-family: "Papyrus";
+    src: local("Papyrus"),
+         url("/fonts/PAPYRUS.TTF") format("truetype");
+}

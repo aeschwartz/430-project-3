@@ -1,0 +1,48 @@
+<div id="settings-container">
+    <form id="settings-form">
+        <h2>Settings</h2>
+        <input type="hidden" name="_csrf" value={{csrfToken}} />
+        <label for="fontFamilyHead">Heading Font:</label>
+        <select name="fontFamilyHead" class="font-select" id="heading-font" 
+        {{#if user.style.fontFamilyHead}} value="{{user.style.fontFamilyHead}}" {{/if}}>
+            <option value="Papyrus">Papyrus</option>
+            <option value="Curlz MT">Curlz MT</option>
+            <option value="Jokerman">Jokerman</option>
+            <option value="Impact">Impact</option>
+            <option value="Comic Sans MS">Comic Sans MS</option>
+            <option value="Courier New">Courier New</option>
+        </select>
+        <br />
+        <label for="fontFamilyBody">Body Font:</label>
+        <select name="fontFamilyBody" class="font-select" id="body-font"
+        {{#if user.style.fontFamilyBody}} value="{{user.style.fontFamilyBody}}" {{/if}}>
+            <option value="Papyrus">Papyrus</option>
+            <option value="Curlz MT">Curlz MT</option>
+            <option value="Jokerman">Jokerman</option>
+            <option value="Impact">Impact</option>
+            <option value="Comic Sans MS">Comic Sans MS</option>
+            <option value="Courier New">Courier New</option>
+        </select>
+        <br />
+        <label for="color">Text Color:</label>
+        <input type="color" name="color" id="text-color"
+        {{#if user.style.color}} value={{user.style.color}} {{/if}}/>
+        <br />
+        <label for="accentColor">Accent Color:</label>
+        <input type="color" name="accentColor" id="accent-color"
+        {{#if user.style.accentColor}} value={{user.style.accentColor}} {{/if}} />
+        <br />
+        <label for="backgroundColor">Background Color:</label>
+        <input type="color" name="backgroundColor" id="bg-color"
+        {{#if user.style.backgroundColor}} value={{user.style.backgroundColor}} {{/if}} />
+        <br />
+
+        <label for="bio">Bio:</label>
+        <br />
+        <textarea form="settings-form" name="bio" rows="4" columns="100" resizable="0">{{#if user.bio}}{{user.bio}}{{/if}}</textarea>
+        <br />
+
+        <a href="/password">Change Password</a>
+    </form>
+    <script src="/assets/settingsBundle.js"></script>
+</div>
