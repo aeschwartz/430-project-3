@@ -97,11 +97,17 @@ const getPosts = (req, res) => {
   });
 };
 
-const createPage = (req, res) =>
-  res.render('create', {
+const createPage = (req, res) => {
+  const obj = {
     csrfToken: req.csrfToken(),
     user: req.session.account,
-  });
+  };
+
+  if(req.query.replyId) obj.replyId = req.query.replyId;
+
+  res.render('create', obj);
+};
+
 
 const makePost = (req, res) => {
   if (!req.body.postBody) {

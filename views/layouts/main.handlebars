@@ -13,40 +13,75 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.34/browser.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/remarkable/1.6.2/remarkable.min.js"></script>
+  <!--
+    #check:checked + #changer>div:nth-child(1) {
+  transform: translateY(4px) rotate(45deg) scaleX(1.2)
+}
+
+#check:checked + #changer>div:nth-child(2) {
+  transform: scale(0)
+}
+
+#check:checked + #changer>div:nth-child(3) {
+  transform: translateY(-4px) rotate(-45deg) scaleX(1.2)
+}
+
+#changer{
+display: flex;
+flex-direction: column;
+}
+
+#changer>div{
+width: 10px;
+height: 2px;
+padding: 1px;
+transition: transform .1s;
+}
+
+#changer>div:after{
+content: '';
+background: black;
+width: 100%;
+height: 100%;
+display: block;
+}
+</style>
+-->
   <title>ProfileZ</title>
   {{#if profile}}
     <style>
-      #content-container>*:nth-child(2):not(#posts-container) h1,
-      #content-container>*:nth-child(2):not(#posts-container) h2,
-      #content-container>*:nth-child(2):not(#posts-container) h3,
-      #content-container>*:nth-child(2):not(#posts-container) h4,
-      #content-container>*:nth-child(2):not(#posts-container) h5,
-      #content-container>*:nth-child(2):not(#posts-container) h6{
+      {{!-- TODO: create shared class name for div --}}
+      #content-container>div:not(#posts-container) h1,
+      #content-container>div:not(#posts-container) h2,
+      #content-container>div:not(#posts-container) h3,
+      #content-container>div:not(#posts-container) h4,
+      #content-container>div:not(#posts-container) h5,
+      #content-container>div:not(#posts-container) h6{
         font-family: {{profile.user.style.fontFamilyHead}}, Papyrus !important;
       }
-      #content-container>*:nth-child(2):not(#posts-container){
+      #content-container>div:not(#posts-container){
         font-family: {{profile.user.style.fontFamilyBody}} !important;
         color: {{profile.user.style.color}} !important;
       }
-      #content-container>*:nth-child(2){
+      #content-container>div{
         background-color: {{profile.user.style.backgroundColor}} !important;
       }
     </style>
   {{else if user}}
       <style>
-      #content-container>*:nth-child(2):not(#posts-container) h1,
-      #content-container>*:nth-child(2):not(#posts-container) h2,
-      #content-container>*:nth-child(2):not(#posts-container) h3,
-      #content-container>*:nth-child(2):not(#posts-container) h4,
-      #content-container>*:nth-child(2):not(#posts-container) h5,
-      #content-container>*:nth-child(2):not(#posts-container) h6{
+      #content-container>div:not(#posts-container) h1,
+      #content-container>div:not(#posts-container) h2,
+      #content-container>div:not(#posts-container) h3,
+      #content-container>div:not(#posts-container) h4,
+      #content-container>div:not(#posts-container) h5,
+      #content-container>div:not(#posts-container) h6{
         font-family: {{user.style.fontFamilyHead}}, Papyrus !important;
       }
-      #content-container>*:nth-child(2):not(#posts-container){
+      #content-container>div:not(#posts-container){
         font-family: {{user.style.fontFamilyBody}} !important;
         color: {{user.style.color}} !important;
       }
-      #content-container>*:nth-child(2){
+      #content-container>div{
         background-color: {{user.style.backgroundColor}} !important;
       }
     </style>
@@ -55,15 +90,27 @@
 
 <body>
   <div id="content-container">
+    <input type="checkbox" id="dropdown-check" name="dropdown-check" />
     <nav>
-      <a href="/" alt="Home feed"><i class="fas fa-home"></i></a>
-      <a href="/me" alt="Profile"><i class="fas fa-user"></i></a>
+      <label id="dropdown" for="dropdown-check">
+        <i>
+          <div id="changer">
+            <div></div>
+            <div></div>
+            <div></div>
+          </div>
+        </i>
+        <span>Close</span>
+        </label>
+      </a>
+      <a href="/" alt="Home feed"><i class="fas fa-home"></i><span>Home</span></a>
+      <a href="/me" alt="Profile"><i class="fas fa-user"></i><span>Profile</span></a>
       {{#if user}}
-        <a href="/create" alt="create post"><i class="fas fa-plus"></i></a>
-        <a href="/settings" alt="User settings"><i class="fas fa-cog"></i></a>
-        <a href="/logout" alt="Log out"><i class="fas fa-sign-out-alt"></i></a>
+        <a href="/create" alt="create post"><i class="fas fa-plus"></i><span>Post</span></a>
+        <a href="/settings" alt="User settings"><i class="fas fa-cog"></i><span>Settings</span></a>
+        <a href="/logout" alt="Log out"><i class="fas fa-sign-out-alt"></i><span>Log out</span></a>
       {{else}}
-        <a href="/login" alt="Log in"><i class="fas fa-sign-in-alt"></i></a>
+        <a href="/login" alt="Log in"><i class="fas fa-sign-in-alt"></i><span>Log in</span></a>
       {{/if}}
     </nav>
     {{{body}}}
