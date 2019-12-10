@@ -8,40 +8,7 @@ const PostFeed = (props) => {
     }
 
     const postNodes = props.posts.map((post) => {
-        if (!post.owner.style) {
-            return (
-            <div className="post">
-                <a href={`/profile?user=${post.owner.username}`}>{post.owner.username}</a>
-                {post.postTitle &&
-                    <h2 className="title">
-                        {post.postTitle}
-                    </h2>
-                }
-                <p className="body">
-                    {post.postBody}
-                </p>
-            </div>
-            );
-        }
-        const rootStyle = {
-            backgroundColor: post.owner.style.backgroundColor,
-            color: post.owner.style.color,
-            fontFamily: post.owner.style.fontFamilyBody
-        }
-        return (
-            <div className="post"
-                style={rootStyle}>
-                <a href={`/profile?user=${post.owner.username}`}>{post.owner.username}</a>
-                {post.postTitle &&
-                    <h2 className="title" style={{ fontFamily: post.owner.style.fontFamilyHead }}>
-                        {post.postTitle}
-                    </h2>
-                }
-                <p className="body">
-                    {post.postBody}
-                </p>
-            </div>
-        );
+        return <PostNode post={post} />
     });
 
     postNodes.reverse();
@@ -94,14 +61,14 @@ const loadPostsFromServer = (user) => {
 };
 
 const setup = () => {
-    if ($("#posts-container")[0]) {
+    if (document.querySelector("#posts-container")) {
         ReactDOM.render(
             <PostFeed posts={[]} />,
             document.querySelector("#posts-container")
         );
         loadPostsFromServer();
     }
-    else if ($("#profile-container")[0]) {
+    else if (document.querySelector("#profile-container")) {
         const user = document.querySelector("#profile-container").dataset.user;
 
         // TODO: change this to rendering whole profile
@@ -111,6 +78,25 @@ const setup = () => {
         );
 
         loadPostsFromServer(user);
+    }
+    else if (document.querySelector("#create-container")) {
+        // see if reply div exists
+        const replyDiv = document.querySelector("#reply-post");
+        if(!replyDiv) return; // return if doesn't
+
+        // get reply id
+        const id = document.querySelector("#reply-post").dataset.id;
+        sendAjax('GET', `/getPosts?id=${id}`, null, 
+        (data) => {
+            ReactDOM.render(
+                <PostNode post={data.post} />,
+                replyDiv
+            );
+        }, 
+        () => { // onerror
+            location.href = "/";
+        });
+
     }
 };
 

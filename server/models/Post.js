@@ -29,6 +29,11 @@ const PostSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
+
+  replyTo: {
+    type: mongoose.Schema.ObjectId,
+    ref: 'Post',
+  },
 });
 
 PostSchema.statics.toAPI = (doc) => ({

@@ -13,40 +13,6 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.34/browser.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/remarkable/1.6.2/remarkable.min.js"></script>
-  <!--
-    #check:checked + #changer>div:nth-child(1) {
-  transform: translateY(4px) rotate(45deg) scaleX(1.2)
-}
-
-#check:checked + #changer>div:nth-child(2) {
-  transform: scale(0)
-}
-
-#check:checked + #changer>div:nth-child(3) {
-  transform: translateY(-4px) rotate(-45deg) scaleX(1.2)
-}
-
-#changer{
-display: flex;
-flex-direction: column;
-}
-
-#changer>div{
-width: 10px;
-height: 2px;
-padding: 1px;
-transition: transform .1s;
-}
-
-#changer>div:after{
-content: '';
-background: black;
-width: 100%;
-height: 100%;
-display: block;
-}
-</style>
--->
   <title>ProfileZ</title>
   {{#if profile}}
     <style>
@@ -57,14 +23,14 @@ display: block;
       #content-container>div:not(#posts-container) h4,
       #content-container>div:not(#posts-container) h5,
       #content-container>div:not(#posts-container) h6{
-        font-family: {{profile.user.style.fontFamilyHead}}, Papyrus !important;
+        font-family: {{profile.user.style.fontFamilyHead}}, Papyrus;
       }
       #content-container>div:not(#posts-container){
-        font-family: {{profile.user.style.fontFamilyBody}} !important;
-        color: {{profile.user.style.color}} !important;
+        font-family: {{profile.user.style.fontFamilyBody}};
+        color: {{profile.user.style.color}};
       }
       #content-container>div{
-        background-color: {{profile.user.style.backgroundColor}} !important;
+        background-color: {{profile.user.style.backgroundColor}};
       }
     </style>
   {{else if user}}
@@ -75,14 +41,14 @@ display: block;
       #content-container>div:not(#posts-container) h4,
       #content-container>div:not(#posts-container) h5,
       #content-container>div:not(#posts-container) h6{
-        font-family: {{user.style.fontFamilyHead}}, Papyrus !important;
+        font-family: {{user.style.fontFamilyHead}}, Papyrus;
       }
       #content-container>div:not(#posts-container){
-        font-family: {{user.style.fontFamilyBody}} !important;
-        color: {{user.style.color}} !important;
+        font-family: {{user.style.fontFamilyBody}};
+        color: {{user.style.color}};
       }
       #content-container>div{
-        background-color: {{user.style.backgroundColor}} !important;
+        background-color: {{user.style.backgroundColor}};
       }
     </style>
   {{/if}}

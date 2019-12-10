@@ -1,18 +1,21 @@
 <div id="create-container">
     {{#if replyId}}
-    <div id="reply-post">
+    <div id="reply-post" data-id={{replyId}}>
     </div>
     {{/if}}
-    <form method="POST" action="/post" id="create-form">
+    <form method="POST" action="/post" class="form" id="create-form">
+        {{#if replyId}}
+        <h2>Reply to Post</h2>
+        {{else}}
         <h2>Create Post</h2>
+        {{/if}}
         <input type="hidden" name="_csrf" value={{csrfToken}} />
         {{#if replyId}}
         <input type="hidden" name="replyId" value={{replyId}} />
         {{/if}}
         <input type="text" name="postTitle" placeholder="Title" />
-        <br />
         <textarea name="postBody" rows="10" columns="10" placeholder="Body Text"></textarea>
-        <br />
         <input type="submit" value="Publish" />
     </form>
+    <script src="/assets/bundle.js"></script>
 </div>
